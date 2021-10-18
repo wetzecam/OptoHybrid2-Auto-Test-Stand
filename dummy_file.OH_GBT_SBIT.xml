@@ -1,0 +1,87 @@
+GBT SBIT File<?xml version="1.0" ?>
+<ROOT>
+   <HEADER>
+      <TYPE>
+         <EXTENSION_TABLE_NAME>OH_GBT_SBIT</EXTENSION_TABLE_NAME>
+         <NAME>GE21 OH SBIT</NAME>
+      </TYPE>
+      <RUN>
+         <RUN_TYPE>GE21 OH SBIT</RUN_TYPE>
+         <RUN_NUMBER>0</RUN_NUMBER>
+         <RUN_BEGIN_TIMESTAMP>2021-10-04 17:33:00</RUN_BEGIN_TIMESTAMP>
+         <RUN_END_TIMESTAMP>2021-06-06 00:10:00</RUN_END_TIMESTAMP>
+         <LOCATION>TAMU</LOCATION>
+         <USER>Cameron Wetzel</USER>
+         <COMMENT_DESCRIPTION>comment description</COMMENT_DESCRIPTION>
+      </RUN>
+   </HEADER>
+   <DATA_SET>
+      <HARDWARE>
+         <KIND_OF_PART>GEM Opto Hybrid V3</KIND_OF_PART>
+         <VERSION>3</VERSION>
+         <OH_SERIAL_NUMBER>26</OH_SERIAL_NUMBER>
+      </HARDWARE>
+   </DATA_SET>
+   <SBIT>
+      <VFAT_0>
+         <SBIT_CENTER>-1, -1, -1, -1, -1, -1, -1, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 0, 0, 0, 0, 0, 0, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>37, 37, 37, 37, 37, 37, 37, 37</SBIT_WIDTH>
+      </VFAT_0>
+      <VFAT_1>
+         <SBIT_CENTER>-1, -1, -1, -1, -1, -1, -1, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 0, 0, 0, 0, 0, 0, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>37, 37, 37, 37, 37, 37, 37, 37</SBIT_WIDTH>
+      </VFAT_1>
+      <VFAT_2>
+         <SBIT_CENTER>-1, 0, -1, 0, 0, 0, 0, 0</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 1, 0, 1, 1, 1, 1, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>35, 35, 35, 35, 36, 35, 35, 34</SBIT_WIDTH>
+      </VFAT_2>
+      <VFAT_3>
+         <SBIT_CENTER>0, 0, 0, 0, -1, 0, 0, 0</SBIT_CENTER>
+         <SBIT_BEST_DLY>1, 1, 1, 1, 0, 1, 1, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>35, 35, 36, 35, 35, 36, 36, 36</SBIT_WIDTH>
+      </VFAT_3>
+      <VFAT_4>
+         <SBIT_CENTER>-1, 0, 0, 0, 0, 0, 0, 0</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 1, 1, 1, 1, 1, 1, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>37, 35, 36, 36, 36, 35, 36, 35</SBIT_WIDTH>
+      </VFAT_4>
+      <VFAT_5>
+         <SBIT_CENTER>-1, -1, -1, -1, -1, -1, -1, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 0, 0, 0, 0, 0, 0, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>37, 37, 37, 37, 37, 37, 37, 37</SBIT_WIDTH>
+      </VFAT_5>
+      <VFAT_6>
+         <SBIT_CENTER>-1, 0, -1, 0, 0, 0, 0, 0</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 1, 0, 1, 1, 1, 1, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>34, 36, 37, 36, 36, 36, 36, 36</SBIT_WIDTH>
+      </VFAT_6>
+      <VFAT_7>
+         <SBIT_CENTER>0, 0, 0, 0, 0, 0, -1, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>1, 1, 1, 1, 1, 1, 0, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>36, 36, 36, 36, 36, 35, 35, 37</SBIT_WIDTH>
+      </VFAT_7>
+      <VFAT_8>
+         <SBIT_CENTER>-2, -2, -2, -1, -2, -1, -2, -2</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 0, 0, 1, 0, 1, 0, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>32, 32, 32, 34, 32, 34, 33, 32</SBIT_WIDTH>
+      </VFAT_8>
+      <VFAT_9>
+         <SBIT_CENTER>0, -1, 0, -1, -2, -1, -1, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>2, 1, 2, 1, 0, 1, 1, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>36, 35, 35, 35, 33, 34, 35, 34</SBIT_WIDTH>
+      </VFAT_9>
+      <VFAT_10>
+         <SBIT_CENTER>-1, 0, 0, -1, 0, 0, -1, 0</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 1, 1, 0, 1, 1, 0, 1</SBIT_BEST_DLY>
+         <SBIT_WIDTH>35, 36, 36, 35, 36, 36, 35, 36</SBIT_WIDTH>
+      </VFAT_10>
+      <VFAT_11>
+         <SBIT_CENTER>-1, -1, -1, -1, -1, -1, 0, -1</SBIT_CENTER>
+         <SBIT_BEST_DLY>0, 0, 0, 0, 0, 0, 1, 0</SBIT_BEST_DLY>
+         <SBIT_WIDTH>37, 37, 37, 37, 37, 37, 36, 37</SBIT_WIDTH>
+      </VFAT_11>
+   </SBIT>
+</ROOT>
