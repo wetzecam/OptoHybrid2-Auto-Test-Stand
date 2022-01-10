@@ -238,10 +238,12 @@ def PRBS_Loopback_Test(Verbose = False):
 
 
 def Make_GBT_SBIT_XML(root, DataSet, VFATS):
-    Sbit = ET.SubElement(root,'SBIT')
     for vfat in VFATS:
-        head_Vfat = 'VFAT_'+str(vfat.VFAT)
-        Vfat_ET = ET.SubElement(Sbit,head_Vfat)
+		#Sbit = ET.SubElement(DataSet,'DATA')
+        #head_Vfat = 'VFAT_'+str(vfat.VFAT)
+        Vfat_ET = ET.SubElement(DataSet,'DATA')
+		WriteField = ET.SubElement(Vfat_ET,"VFAT_NUMBER")
+		WriteField.text = str(vfat.VFAT)
         WriteField = ET.SubElement(Vfat_ET,"SBIT_CENTER")
         WriteField.text = ", ".join(map(str,vfat.SBIT_CENTER))
         WriteField = ET.SubElement(Vfat_ET,"SBIT_BEST_DLY")
@@ -250,22 +252,26 @@ def Make_GBT_SBIT_XML(root, DataSet, VFATS):
         WriteField.text = ", ".join(map(str,vfat.SBIT_WIDTH))
     return root,DataSet
 def Make_GBT_QC_XML(root, DataSet, ELINKS):
-    Elink = ET.SubElement(root,'ELINK_RESULT')
+    #Elink = ET.SubElement(root,'ELINK_RESULT')
     for gbt in range(2):
-        head_gbt = "GBT_"+str(gbt)
-        Gbt = ET.SubElement(Elink,head_gbt)
+		#Elink = ET.SubElement(DataSet, 'DATA')
+		#head_gbt = "GBT_"+str(gbt)
+        #Gbt = ET.SubElement(Elink,head_gbt)
         for elink in ELINKS:
+			Elink = ET.SubElement(DataSet,'DATA')
             if(elink.GBT == gbt):
-                head_elink = "ELINK_"+str(elink.ELINK)
-                Elink_ET = ET.SubElement(Gbt,head_elink)
+                WriteField = ET.SubElement(Elink,'GBT_NUMBER')
+				WriteField.text = str(gbt)
+                WriteField = ET.SubElement(Elink,'ELINK')
+				WriteFied.text = str(Elink.ELINK)
                 if(hasattr(elink,'BER')):
-                    WriteField = ET.SubElement(Elink_ET,'BER')
+                    WriteField = ET.SubElement(Elink,'BER')
                     WriteField.text = str(elink.BER)
                 if(hasattr(elink,'LINK_GOOD')):
-                    WriteField = ET.SubElement(Elink_ET,'LINK_GOOD')
+                    WriteField = ET.SubElement(Elink,'LINK_GOOD')
                     WriteField.text = ", ".join(map(str,elink.LINK_GOOD))
                 if(hasattr(elink,'SYNC_ERR_CNT')):
-                    WriteField = ET.SubElement(Elink_ET,'SNYC_ERR_CNT')
+                    WriteField = ET.SubElement(Elink,'SNYC_ERR_CNT')
                     WriteField.text = ", ".join(map(str,elink.SYNC_ERR_CNT))
     return root,DataSet
 def Make_OH_QC_XML(root, DataSet, hw_info, test_conditions, test_results, adc_reading):
@@ -512,12 +518,12 @@ def BuildRunCommonXML(xml_head, hw_info, test_conditions, xmltype, xmltype2):
 
 	# Hardware INFO:
 	DataSet = ET.SubElement(root, 'DATA_SET')
-	Part = ET.SubElement(DataSet, 'HARDWARE')
+	Part = ET.SubElement(DataSet, 'PART')
 	WriteField = ET.SubElement(Part, 'KIND_OF_PART')
 	WriteField.text = hw_info.KIND_OF_PART
-	WriteField = ET.SubElement(Part, 'VERSION')
-	WriteField.text = str(hw_info.VERSION)
-	WriteField = ET.SubElement(Part, 'OH_SERIAL_NUMBER')
+	#WriteField = ET.SubElement(Part, 'VERSION')
+	#WriteField.text = str(hw_info.VERSION)
+	WriteField = ET.SubElement(Part, 'SERIAL_NUMBER')
 	WriteField.text = str(hw_info.OH_SERIAL_NUMBER)
 
 	return root, DataSet

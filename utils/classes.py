@@ -14,9 +14,9 @@ class XML_HEADER:
 
 
 class HW_Info:
-    
+
     def __init__(self):
-        self.KIND_OF_PART = 'GEM Opto Hybrid V3'
+        self.KIND_OF_PART = 'GE21 Opto Hybrid'
         self.OH_SERIAL_NUMBER = raw_input("What board number are you testing? ")
         self.VERSION = 3
         self.PRODUCTION_OH = True
@@ -24,7 +24,7 @@ class HW_Info:
         self.SCA_SERIAL = 1141
         self.GEB_ID = 10101
         self.FUSING_DATE = '20210606'
-        if(raw_input("Did you fuse this board today? ")=="y"): 
+        if(raw_input("Did you fuse this board today? ")=="y"):
             today=datetime.datetime.now()
             self.FUSING_DATE=today.strftime("%Y%m%d")
         else:
