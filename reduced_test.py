@@ -27,8 +27,8 @@ hw_info = HW_Info()
 test_conditions=Test_Condition()
 VERBOSE = True
 COLD_BOOT = False
-PROMless_Load_Iters = 1000
-MWRD_LIMIT = 125000
+PROMless_Load_Iters = 1
+MWRD_LIMIT = 125
 
 def main():
 	# Set the Serial Number based on User Input from Test_Condition Constructor
