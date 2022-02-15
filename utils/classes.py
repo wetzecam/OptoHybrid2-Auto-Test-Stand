@@ -234,12 +234,52 @@ class Test_Result:
 
     def Validate_ALL_Tests(self):
         self.All_TEST_PASSED = ((self.CTP7_COMM_GOOD))
+        if not (self.CTP7_COMM_GOOD):
+            print(Colors.RED + 'FAIL: CTP7 COMM' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: CTP7 COMM' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.VTTX_OPTICAL_LINK_GOOD))
+        if not (self.VTTX_OPTICAL_LINK_GOOD):
+            print(Colors.RED + 'FAIL: VTTX_OPTICAL_LINK_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: VTTX_OPTICAL_LINK_GOOD' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.PROMLESS_LOAD_PATH_GOOD))
+        if not (self.PROMLESS_LOAD_PATH_GOOD):
+            print(Colors.RED + 'FAIL: PROMLESS_LOAD_PATH_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: PROMLESS_LOAD_PATH_GOOD' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.ADC_READINGS_GOOD))
+        if not (self.ADC_READINGS_GOOD):
+            print(Colors.RED + 'FAIL: ADC_READINGS_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: ADC_READINGS_GOOD' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.VFAT_ELINK_PHASE_SCAN_GOOD))
+        if not (self.VFAT_ELINK_PHASE_SCAN_GOOD):
+            print(Colors.RED + 'FAIL: VFAT_ELINK_PHASE_SCAN_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: VFAT_ELINK_PHASE_SCAN_GOOD' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.FPGA_ELINK_PRBS_GOOD))
+        if not (self.FPGA_ELINK_PRBS_GOOD):
+            print(Colors.RED + 'FAIL: FPGA_ELINK_PRBS_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: FPGA_ELINK_PRBS_GOOD' + Colors.ENDC)
+
         self.All_TEST_PASSED = (self.All_TEST_PASSED and (self.ALL_SBIT_GOOD))
+        if not (self.ALL_SBIT_GOOD):
+            print(Colors.RED + 'FAIL: ALL_SBIT_GOOD' + Colors.ENDC)
+        else:
+            print(Colors.GREEN + 'PASS: ALL_SBIT_GOOD' + Colors.ENDC)
+
+        print('------------------------------------')
+        if self.All_TEST_PASSED:
+            print(Colors.GREEN + 'ALL TESTS PASSED' + Colors.ENDC)
+        else:
+            print(Colors.RED + 'SOME TEST(S) FAILED' + Colors.ENDC)
         return self.All_TEST_PASSED
 
 class GBT_ELINK:
