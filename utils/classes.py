@@ -197,8 +197,11 @@ class Test_Result:
         return self.PROMLESS_LOAD_PATH_GOOD
 
     def Validate_VTTX_Optical_Link(self, VTTX_Link_Result):
-        # FIX ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        self.VTTX_OPTICAL_LINK_GOOD = True
+        # !!!!! Test ME !!! (Feb. 15 2022)
+        self.VTTX_OPTICAL_LINK_GOOD = VTTX_Link_Result[0]
+        if not VTTX_Link_Result[0]: # If Failed, Print Error Messages
+            for str in VTTX_Link_Result[1]:
+                print(str)
         return
 
     def Validate_ADC_Reading(self, ADC_Result):
@@ -207,18 +210,21 @@ class Test_Result:
         return self.ADC_READINGS_GOOD
 
     def Validate_VFAT_ELINK_Phase(self, ELINK, VFAT_Phase_Result):
-        # FIX ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # !!!!!  Test ME !!!! (Feb. 15 2022)
         self.VFAT_ELINK_PHASE_SCAN_GOOD = VFAT_Phase_Result
         return self.VFAT_ELINK_PHASE_SCAN_GOOD
 
     def Validate_FPGA_ELINK_Phase(self, FPGA_Phase_Result):
-        # FIX ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # !!!!!!!!!!!! UNUSED !!!!!!!!!!!!!!!!!!!!
         self.FPGA_ELINK_PRBS_GOOD = True
         return Best_Phases
 
-    def Validate_PRBS_BER(self, BER_Result):
-        # FIX ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        self.FPGA_ELINK_PRBS_GOOD = True
+    def Validate_PRBS_BER(self, BER_Result, MWRD_LIMIT=125000):
+        # !!!!!  Test ME !!!! (Feb. 15 2022)
+        PF_Flag = True
+        for elink in BER_Result:
+            PF_Flag = (PF_Flag) and (elink.BER >= MWRD_LIMIT)
+        self.FPGA_ELINK_PRBS_GOOD = PF_Flag
         return
 
     def Validate_SBIT(self, SBIT_Result):

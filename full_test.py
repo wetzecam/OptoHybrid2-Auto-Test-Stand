@@ -50,7 +50,7 @@ def main():
 
 	# Validate Proper CTP7 <-> OH Communications
 	CTP7_OH_Comm_Result = Check_CTP7_OH_Comm(VERBOSE)
-	print(CTP7_OH_Comm_Result)	# Replace w/ testStatus Method
+	#print(CTP7_OH_Comm_Result)	# Replace w/ testStatus Method
 	testStatus.Validate_CTP7_COMM(CTP7_OH_Comm_Result)
 
 	ADC_Reading.set_RSSI_Init(readRSSI())
@@ -83,7 +83,7 @@ def main():
 	#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	#!!!!!!!!!!! ADD PRBS FUNCTION !!!!!!!!!!
 	BER_Result = PRBS_Loopback_Test()
-	testStatus.Validate_PRBS_BER(BER_Result)
+	testStatus.Validate_PRBS_BER(BER_Result, MWRD_LIMIT)
 
 	# Switch to Full FW:
 	load_fw_full()
