@@ -1,6 +1,7 @@
 #import numpy as np
 from cmd_output import *
 import datetime
+from subprocess import check_output
 
 N_PHASES = 15
 N_SBIT = 8
@@ -23,12 +24,16 @@ class HW_Info:
         self.FPGA_DNA = 12310230131230
         self.SCA_SERIAL = 1141
         self.GEB_ID = 10101
-        self.FUSING_DATE = '20210606'
+        self.FUSING_DATE = '2021-06-06'
         if(raw_input("Did you fuse this board today? ")=="y"):
-            today=datetime.datetime.now()
-            self.FUSING_DATE=today.strftime("%Y%m%d")
+            #today=datetime.datetime.now()
+            #self.FUSING_DATE=today.strftime("%Y%m%d")
+            self.FUSING_DATE = check_output(['date','+%Y-%m-%d'])
+            #print("\n####\n")
+            print(self.FUSING_DATE)
+            #print("\n####\n")
         else:
-            self.FUSING_DATE=input("When was it fused (enter as YYYYMMDD eg 20210615)? ")
+            self.FUSING_DATE=input("When was it fused (enter as YYYY-MM-DD eg 2021-06-15)? ")
         self.GBT_0_SERIAL = 1123409
         self.GBT_1_SERIAL = 2530992
         self.GBT_0_FUSE_FILE = 'GBTX_GE21_OHv2_GBT_0_minimal_2020-01-17.txt'
