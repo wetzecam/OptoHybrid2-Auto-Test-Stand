@@ -34,6 +34,7 @@ test_conditions=Test_Condition()
 VERBOSE = True
 COLD_BOOT = False
 
+
 def main():
 	# Set the Serial Number based on User Input from Test_Condition Constructor
 	OutputPath = WORKING_DIR + "/database/"
@@ -54,7 +55,7 @@ def main():
 
 	# Validate Proper CTP7 <-> OH Communications
 	CTP7_OH_Comm_Result = Check_CTP7_OH_Comm(VERBOSE)
-	#print(CTP7_OH_Comm_Result)	# Replace w/ testStatus Method
+	print(CTP7_OH_Comm_Result)	# Replace w/ testStatus Method
 	testStatus.Validate_CTP7_COMM(CTP7_OH_Comm_Result)
 
 	ADC_Reading.set_RSSI_Init(readRSSI())
@@ -68,6 +69,7 @@ def main():
 	testStatus.Validate_Promless_Load(PROMLESS_LOAD_CYCLES, PROMless_Load_Iters)
 
 	# Check VTTX Optical Link Health
+	# print_red("Skipping VTTX optical link test since OTMB receivers are not implemented in CVP13")
 	VTTX_Optical_Result = Check_VTTX_Optical_Link(VERBOSE)
 	print(VTTX_Optical_Result)
 	testStatus.Validate_VTTX_Optical_Link(VTTX_Optical_Result)
@@ -87,12 +89,12 @@ def main():
 	#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	#!!!!!!!!!!! ADD PRBS FUNCTION !!!!!!!!!!
 	BER_Result = PRBS_Loopback_Test()
-	testStatus.Validate_PRBS_BER(BER_Result, MWRD_LIMIT)
+	testStatus.Validate_PRBS_BER(BER_Result)
 
 	# Switch to Full FW:
 	load_fw_full()
 	sleep(0.1)
-	reset_SCA_ASIC()
+	resetSca()
 	program_fw_single()
 
 	# VFAT PHASE SCAN
@@ -102,12 +104,12 @@ def main():
 	ELINKS = ELINKS + BER_Result
 
 	# Perform VFAT S-bits Tests
-	VFATS = SBIT_SCAN_MINIMAL(0, 0, 11, VERBOSE)
+	VFATS = sbit_phase_scan(0, 0, 11, VERBOSE, VERBOSE)
 	testStatus.Validate_SBIT(VFATS)
 
 	# Do Final Check All Tests Passed
 	testStatus.Validate_ALL_Tests()
-
+	Serial = hw_info.OH_SERIAL_NUMBER
 	# After all variables are gathered than generate the XML header
 	root, DataSet = BuildRunCommonXML(xml_head, hw_info, test_conditions,"all","all")
 	root, DataSet = FillXML(root, DataSet, testStatus, ADC_Reading, ELINKS, VFATS)
@@ -115,7 +117,7 @@ def main():
 	gbt_qc, DataSet = BuildRunCommonXML(xml_head, hw_info, test_conditions,"OH_GBT_QC","GE21 OH GBT")
 	gbt_qc, DataSet = Make_GBT_QC_XML(gbt_qc, DataSet, ELINKS)
 
-	gbt_sbit, DataSet = BuildRunCommonXML(xml_head, hw_info, test_conditions,"OH_SBIT_QC","GE21 OH SBIT")
+	gbt_sbit, DataSet = BuildRunCommonXML(xml_head, hw_info, test_conditions,"OH_GBT_SBIT","GE21 OH SBIT")
 	gbt_sbit, DataSet = Make_GBT_SBIT_XML(gbt_sbit, DataSet, VFATS)
 
 	oh_qc, DataSet = BuildRunCommonXML(xml_head, hw_info, test_conditions,"OH_QC","GE21 OH QC Hardware")
@@ -126,19 +128,17 @@ def main():
 	return
 
 def OH_sys_init(Cold_boot_tf=False):
+	parse_xml()
+
 	if(Cold_boot_tf):
-		cold_boot_invert_rx()   # programs CTP7 fw
+		init_gem_backend()
 
-	parseXML()  # Loads Reg Interface
-
-	load_fw_full()  # Loads OH fw-full-vers. --> CTP7 RAM
-
-	# Configures GBT 0 , 1
-	GBT_0_Config = gbt_config(0, 0, 'config', GBT_0_Config_File)
-	GBT_1_Config = gbt_config(0, 1, 'config', GBT_1_Config_File)
+	init_gem_frontend()
+	gbt_0_ready = checkGbtReady(0, 0)
+	gbt_1_ready = checkGbtReady(0, 0)
 
 	# Returns status of GBT Configuration Attempt
-	return [GBT_0_Config, GBT_1_Config]
+	return [gbt_0_ready, gbt_1_ready]
 
 def Check_CTP7_OH_Comm(verbose=False):
 
@@ -181,39 +181,39 @@ def Check_VTTX_Optical_Link(verbose=False):
 	return VTTX_Test_Result
 
 def VFAT_Phase_Scan(verbose=False):
-		# Perform the VFAT Phase Scan, {Best Phases are programmed here}
-		vfat_Scan_Data = scan_VFAT_integrated(verbose)
+        # Perform the VFAT Phase Scan, {Best Phases are programmed here}
+        vfat_Scan_Data = scan_VFAT_integrated(verbose)
 
-		# Organize Data
-		ALL_PHASE_GOOD = vfat_Scan_Data[0]
-		GBT_0_Data = vfat_Scan_Data[1]
-		GBT_1_Data = vfat_Scan_Data[2]
+        # Organize Data
+        ALL_PHASE_GOOD = vfat_Scan_Data[0]
+        GBT_0_Data = vfat_Scan_Data[1]
+        GBT_1_Data = vfat_Scan_Data[2]
 
-		ELINKS_out = []
+        ELINKS_out = []
 
-		# Format GBT_0
-		for elink in range(0,6):
-				ELINKS_out.append(GBT_ELINK(0,elink,GBT_0_Data[0][elink],GBT_0_Data[1][elink]))
-				if(verbose):
-						print('GBT0 ELINK' + str(elink)+' Container Contents:')
-						print(ELINKS_out[-1].LINK_GOOD)
-						print(ELINKS_out[-1].SYNC_ERR_CNT)
-		# Format GBT_1
-		for elink in range(0,6):
-				ELINKS_out.append(GBT_ELINK(1,elink,GBT_1_Data[0][elink],GBT_1_Data[1][elink]))
-				if(verbose):
-						print('GBT1 ELINK' + str(elink)+' Container Contents:')
-						print(ELINKS_out[-1].LINK_GOOD)
-						print(ELINKS_out[-1].SYNC_ERR_CNT)
+        # Format GBT_0
+        for elink in range(0,6):
+                ELINKS_out.append(GBT_ELINK(0,elink,GBT_0_Data[0][elink],GBT_0_Data[1][elink]))
+                if(verbose):
+                        print('GBT0 ELINK' + str(elink)+' Container Contents:')
+                        print(ELINKS_out[-1].LINK_GOOD)
+                        print(ELINKS_out[-1].SYNC_ERR_CNT)
+        # Format GBT_1
+        for elink in range(0,6):
+                ELINKS_out.append(GBT_ELINK(1,elink,GBT_1_Data[0][elink],GBT_1_Data[1][elink]))
+                if(verbose):
+                        print('GBT1 ELINK' + str(elink)+' Container Contents:')
+                        print(ELINKS_out[-1].LINK_GOOD)
+                        print(ELINKS_out[-1].SYNC_ERR_CNT)
 
 
-		return  [ALL_PHASE_GOOD, ELINKS_out]
+        return  [ALL_PHASE_GOOD, ELINKS_out]
 
 
 def PRBS_Loopback_Test(Verbose = False):
 	FPGA_ELINKS = []	# Container for Output ELINK Objects
 	# SCA Reset for Extra Safety
-	reset_SCA_ASIC()
+	resetSca()
 	sleep(1)
 	# Load PRBS firmware to CTP7
 	load_fw_prbs()
@@ -367,7 +367,7 @@ def Make_OH_QC_XML(root, DataSet, hw_info, test_conditions, test_results, adc_re
 	WriteField.text = str(adc_reading.GBT_2_TEMP)
 	WriteField = ET.SubElement(ADC_Readings,'VTRX_TEMP')
 	WriteField.text = str(adc_reading.VTRX_TEMP)
-	WriteField = ET.SubElement(ADC_Readings,'LDO_1v5_TEMP')
+	WriteField = ET.SubElement(ADC_Readings,'LDO_1V5_TEMP')
 	WriteField.text = str(adc_reading.LDO_1v5_TEMP)
 	WriteField = ET.SubElement(ADC_Readings,'SCA_TEMP')
 	WriteField.text = str(adc_reading.SCA_TEMP)
@@ -445,7 +445,7 @@ def FillXML(root, DataSet, test_results, adc_reading, ELINKS, VFATS):
 	WriteField.text = str(adc_reading.GBT_2_TEMP)
 	WriteField = ET.SubElement(ADC_Readings,'VTRX_TEMP')
 	WriteField.text = str(adc_reading.VTRX_TEMP)
-	WriteField = ET.SubElement(ADC_Readings,'LDO_1V5_TEMP')
+	WriteField = ET.SubElement(ADC_Readings,'LDO_1v5_TEMP')
 	WriteField.text = str(adc_reading.LDO_1v5_TEMP)
 	WriteField = ET.SubElement(ADC_Readings,'SCA_TEMP')
 	WriteField.text = str(adc_reading.SCA_TEMP)
@@ -593,7 +593,6 @@ def CheckRunNumber(Serial, test_conditions, OutputPath):
 		#else:
 		#	break
 	return OutputPath
-
 
 if __name__ == '__main__':
 	main()
