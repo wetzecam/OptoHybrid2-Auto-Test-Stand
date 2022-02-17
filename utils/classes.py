@@ -3,6 +3,8 @@ from cmd_output import *
 import datetime
 from subprocess import check_output
 
+MAX_BER = 10 ** -12
+
 N_PHASES = 15
 N_SBIT = 8
 N_VFAT = 12
@@ -223,13 +225,15 @@ class Test_Result:
         # !!!!!  Test ME !!!! (Feb. 15 2022)
         PF_Flag = True
         for elink in BER_Result:
-            PF_Flag = (PF_Flag) and (elink.BER >= MWRD_LIMIT)
+            PF_Flag = (PF_Flag) and (elink.BER <= MAX_BER)
         self.FPGA_ELINK_PRBS_GOOD = PF_Flag
         return
 
     def Validate_SBIT(self, SBIT_Result):
-        # FIX ME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        self.ALL_SBIT_GOOD = True
+	self.ALL_SBIT_GOOD = True
+        for vfat in SBIT_Result:
+		if(vfat.SBIT_WIDTH <5):
+			self.ALL_SBIT_GOOD = False
         return
 
     def Validate_ALL_Tests(self):
