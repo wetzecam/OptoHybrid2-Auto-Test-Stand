@@ -1,4 +1,4 @@
-
+from time import *
 from rw_reg import *
 from mcs import *
 from time import *
@@ -16,6 +16,7 @@ def sendScaCommand(ohList, sca_channel, sca_command, data_length, data, doRead):
     writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.MANUAL_CONTROL.SCA_CMD.SCA_CMD_LENGTH'), data_length)
     writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.MANUAL_CONTROL.SCA_CMD.SCA_CMD_DATA'), d)
     writeReg(getNode('GEM_AMC.SLOW_CONTROL.SCA.MANUAL_CONTROL.SCA_CMD.SCA_CMD_EXECUTE'), 0x1)
+    sleep(0.00015)
     reply = []
     if doRead:
         for i in ohList:
